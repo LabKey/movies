@@ -1,0 +1,127 @@
+<tables xmlns="http://labkey.org/data/xml">
+  <table tableName="country" tableDbType="TABLE">
+    <columns>
+      <column columnName="code"/>
+      <column columnName="country"/>
+    </columns>
+  </table>
+  <table tableName="tomatoes" tableDbType="TABLE">
+    <columns>
+      <column columnName="id"/>
+      <column columnName="image"/>
+      <column columnName="rating"/>
+      <column columnName="meter"/>
+      <column columnName="reviews"/>
+      <column columnName="fresh"/>
+      <column columnName="rotten"/>
+      <column columnName="consensus"/>
+      <column columnName="usermeter"/>
+      <column columnName="userrating"/>
+      <column columnName="userreviews"/>
+      <column columnName="dvd"/>
+      <column columnName="boxoffice"/>
+      <column columnName="production"/>
+      <column columnName="website"/>
+      <column columnName="lastupdated"/>
+      <column columnName="container"/>
+      <column columnName="created"/>
+      <column columnName="createdby"/>
+      <column columnName="modified"/>
+      <column columnName="modifiedby"/>
+      <column columnName="ditransformrunid"/>
+      <column columnName="dimodified"/>
+    </columns>
+  </table>
+  <table tableName="reviews" tableDbType="TABLE">
+    <columns>
+      <column columnName="reviewid"/>
+      <column columnName="titleid"/>
+      <column columnName="rating"/>
+      <column columnName="review"/>
+      <column columnName="container"/>
+      <column columnName="created"/>
+      <column columnName="createdby"/>
+      <column columnName="modified"/>
+      <column columnName="modifiedby"/>
+      <column columnName="ditransformrunid"/>
+      <column columnName="dimodified"/>
+    </columns>
+  </table>
+  <table tableName="genre" tableDbType="TABLE">
+    <columns>
+      <column columnName="genre"/>
+    </columns>
+  </table>
+  <table tableName="titles" tableDbType="TABLE">
+    <titleColumn>title</titleColumn>
+    <columns>
+      <column columnName="id"/>
+      <column columnName="imdbid"/>
+      <column columnName="title"/>
+      <column columnName="year"/>
+      <column columnName="rating"/>
+      <column columnName="runtime"/>
+      <column columnName="genre"/>
+      <column columnName="released"/>
+      <column columnName="director"/>
+      <column columnName="writer"/>
+      <column columnName="cast"/>
+      <column columnName="metacritic"/>
+      <column columnName="imdbrating"/>
+      <column columnName="imdbvotes"/>
+      <column columnName="poster"/>
+      <column columnName="plot"/>
+      <column columnName="fullplot"/>
+      <column columnName="language"/>
+      <column columnName="country"/>
+      <column columnName="awards"/>
+      <column columnName="container"/>
+      <column columnName="created"/>
+      <column columnName="createdby"/>
+      <column columnName="modified"/>
+      <column columnName="modifiedby"/>
+      <column columnName="ditransformrunid"/>
+      <column columnName="dimodified"/>
+    </columns>
+  </table>
+  <table tableName="episodes" tableDbType="TABLE">
+    <columns>
+      <column columnName="id"/>
+      <column columnName="imdbid"/>
+      <column columnName="title"/>
+      <column columnName="year"/>
+      <column columnName="rating"/>
+      <column columnName="runtime"/>
+      <column columnName="genre"/>
+      <column columnName="released"/>
+      <column columnName="season"/>
+      <column columnName="episode"/>
+      <column columnName="seriesid">
+      <fk>   
+        <fkColumnName>id</fkColumnName>
+        <fkTable>titles</fkTable>
+      </fk>
+      </column>
+      <column columnName="director"/>
+      <column columnName="writer"/>
+      <column columnName="cast"/>
+      <column columnName="metacritic"/>
+      <column columnName="imdbrating"/>
+      <column columnName="imdbvotes"/>
+      <column columnName="poster"/>
+      <column columnName="plot"/>
+      <column columnName="fullplot"/>
+      <column columnName="language"/>
+      <column columnName="country"/>
+      <column columnName="awards"/>
+      <column columnName="lastupdated"/>
+      <column columnName="container"/>
+      <column columnName="created"/>
+      <column columnName="createdby"/>
+      <column columnName="modified"/>
+      <column columnName="modifiedby"/>
+      <column columnName="ditransformrunid"/>
+      <column columnName="dimodified"/>
+    </columns>
+  </table>
+</tables>

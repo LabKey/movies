@@ -1,0 +1,145 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<style>
+    ARTICLE { font-family:Verdana, Arial, sans-serif;}
+    ARTICLE H1 {font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; font-weight:normal; font-size:20pt;}
+    SPAN.ghost {color:#cccccc;}
+    DIV.poster {float:left; padding-right:10pt;}
+    DIV.clear {clear:both;}
+    SPAN.nobr { white-space: nowrap;}
+</style>
+<div id="content"></div>
+
+<script type="text/babel">
+
+var id = LABKEY.ActionURL.getParameter("id");
+
+// templates
+
+var SeriesBox = React.createClass(
+{
+  displayName: 'TV Series',
+  render: function()
+  {
+    return (
+        <article className="article title-overview">
+
+        <h1 className="header"><span className="itemprop">{this.props.title}</span>
+            <span className="nobr">&nbsp;({this.props.year})</span>
+        </h1>
+
+        <div className="poster">
+            <img height="317" width="214"
+                alt={this.props.title + ' (' + this.props.year + ') Poster'}
+                title={this.props.title + ' (' + this.props.year + ') Poster'}
+                src={this.props.poster} />
+        </div>
+
+        <div className="title-description">
+        <div className="infobar">
+            &nbsp;{this.props.rating}
+            &nbsp;<span className="ghost">|</span>&nbsp;
+            <span className="itemprop">{this.props.genre}</span>
+            &nbsp;<span className="ghost">|</span>&nbsp;
+            <span className="nobr">{this.props.released}< / span >
+            &nbsp;<span className="ghost">|</span>&nbsp;
+            <span className="nobr"> {this.props.country} </span >
+        </div>
+
+        <p></p>
+
+        <p>{this.props.plot||this.props.fullplot}</p >
+
+        <p></p>
+
+        <div className="txt-block">
+            <h4 className="inline">Director:</h4>
+            {this.props.director}
+        </div>
+
+        <div className="txt-block">
+            <h4 className="inline">Writers:</h4>
+            {this.props.writer}
+        </div>
+
+        <div className="txt-block">
+            <h4 className="inline">Stars:</h4>
+            {this.props.cast}
+        </div>
+        </div>
+        </article>
+      );
+  }
+});
+
+
+
+
+if (id)
+{
+    LABKEY.Query.selectRows({
+        schemaName: 'movies',
+        queryName: 'titles',
+        columns: '*',
+        filterArray: [LABKEY.Filter.create('id', id)],
+        success: loadTitleQueryResult,
+        failure: onFailure
+    });
+}
+
+function loadTitleQueryResult(result)
+{
+    /*
+     {
+     "container" : "a01e4082-3acc-1033-acb1-69006fc3639f",
+     "_labkeyurl_createdby" : "/labkey/query/home/detailsQueryRow.view?schemaName=core&query.queryName=Users&UserId=1003",
+     "country" : "USA",
+     "year" : "2011–",
+     "rating" : "TV-MA",
+     "metacritic" : null,
+     "language" : "English",
+     "title" : "Game of Thrones",
+     "imdbrating" : 9.5,
+     "cast" : "Peter Dinklage, Lena Headey, Emilia Clarke, Kit Harington",
+     "fullplot" : "Nine noble families fight for control of the mythical land of Westeros. Political and sexual intrigue is pervasive. Robert Baratheon, King of Westeros, asks his old friend Eddard, Lord Stark, to serve as Hand of the King, or highest official. Secretly warned that the previous Hand was assassinated, Eddard accepts in order to investigate further. Meanwhile the Queen's family, the Lannisters, may be hatching a plot to take power. Across the sea, the last members of the previous and deposed ruling family, the Targaryens, are also scheming to regain the throne. The friction between the houses Stark, Lannister, Baratheon and Targaryen and with the remaining great houses Greyjoy, Tully, Arryn, Tyrell and Martell leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war and political confusion, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
+     "_labkeyurl_modifiedby" : "/labkey/query/home/detailsQueryRow.view?schemaName=core&query.queryName=Users&UserId=1003",
+     "plot" : "Several noble families fight for control of the mythical land of Westeros.",
+     "_labkeyurl_container" : "/labkey/project/home/begin.view?",
+     "createdby" : 1003,
+     "genre" : "Adventure, Drama, Fantasy",
+     "modified" : "2015/09/26 15:38:18",
+     "id" : 944947,
+     "released" : "2011/04/17 00:00:00",
+     "dimodified" : null,
+     "imdbid" : "tt0944947",
+     "director" : null,
+     "created" : "2015/09/26 15:38:18",
+     "runtime" : "55 min",
+     "imdbvotes" : 838065,
+     "ditransformrunid" : null,
+     "awards" : "Won 1 Golden Globe. Another 114 wins & 242 nominations.",
+     "_labkeyurl_imdbid" : "/labkey/query/home/detailsQueryRow.view?schemaName=movies&query.queryName=titles&id=944947",
+     "modifiedby" : 1003,
+     "writer" : "David Benioff, D.B. Weiss",
+     "poster" : "http://ia.media-imdb.com/images/M/MV5BNTgxOTI4NzY2M15BMl5BanBnXkFtZTgwMjY3MTM2NDE@._V1_SX300.jpg"
+     }
+     */
+    var row = result.rows[0];
+    try
+    {
+        var date = new Date(row.released);
+        row.released = Ext4.util.Format.date(date,"d F Y");
+    }
+    catch (err) {}
+    React.render(React.createElement(SeriesBox,row), $('#content')[0]);
+}
+
+function onFailure()
+{
+    alert('fail');
+}
+
+
+var model = {name:'Matthew', id:id};
+</script>
