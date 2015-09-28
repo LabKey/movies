@@ -129,7 +129,7 @@ function submitReview(e)
     LABKEY.Query.insertRows({
         schemaName: 'movies',
         queryName: 'reviews',
-        rows: [{"id": id, "rating": rating, "review": review}],
+        rows: [{"titleid": id, "rating": rating, "review": review}],
         successCallback: function(data)
             {
                 window.location.reload();
