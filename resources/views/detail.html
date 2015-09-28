@@ -8,18 +8,27 @@
     DIV.poster {float:left; padding-right:10pt;}
     DIV.clear {clear:both;}
     SPAN.nobr { white-space: nowrap;}
+    UL.episodes { list-style-type:none; }
 </style>
+
+
 <div id="content"></div>
 
 <script type="text/babel">
-
-var id = LABKEY.ActionURL.getParameter("id");
-
-// templates
-
-var SeriesBox = React.createClass(
+window.SeriesBox = React.createClass(
 {
   displayName: 'TV Series',
+
+  showReviewForm : function(e)
+  {
+    $('#createReviewForm').css("display", "block");
+  },
+
+  hideReviewForm : function()
+  {
+    $('#createReviewForm').css("display", "none");
+  },
+
   render: function()
   {
     return (
@@ -67,73 +76,104 @@ var SeriesBox = React.createClass(
             <h4 className="inline">Stars:</h4>
             {this.props.cast}
         </div>
+
+        <div className="clear" />
+        <h4 className="txt-block">Reviews:</h4>
+
+        <div><a href="#" onClick={this.showReviewForm}>add your own review</a></div>
+        <div id="createReviewForm" style={{display:'none'}}>
+        <form onSubmit={submitReview}>
+                <span className="nobr">rating : <input type="radio" name="rating" value="1"/>1 <input type="radio" name="rating" value="2"/>2 <input type="radio" name="rating" value="3"/>3 <input type="radio" name="rating" value="4"/>4 <input type="radio" name="rating" value="5"/>5</span><br />
+                <textarea name="review" style={{width:'500pt', height:'180pt'}}></textarea><br />
+                <input type="submit" value="save"/>
+        </form>
+        </div>
+        <ul className="reviews">
+        {this.props.reviews.map(function(review)
+        {
+            return <div key={reviews.reviewid}><div style={{'font-size':'24pt', float:'left', 'padding-right':'5pt'}}>{review.rating}</div>{review["createdby/displayname"]} - {review.review}<div className="clear"/></div>;
+        })}
+        </ul>
+
+
+        <h4 className="txt-block">Episodes:</h4>
+        <ul className="episodes">
+        {this.props.episodes.map(function(episode)
+        {
+            return <li key={episode.id}>season {episode.season}: {episode.episode} {episode.title}</li>;
+        })}
+        </ul>
+
         </div>
         </article>
       );
   }
 });
+</script>
+<script type="text/javascript">
+
+var id = LABKEY.ActionURL.getParameter("id");
+var titleInfo = null;
+var reviews = null;
+var episodes = null;
 
 
-
-
-if (id)
+function submitReview(e)
 {
-    LABKEY.Query.selectRows({
+    var rating = $("input[name='rating']:checked").val();
+    var review = $("textarea[name='review']").val();
+    $('#createReviewForm').css("display","none");
+    e.preventDefault();
+    e.stopPropagation();
+
+    LABKEY.Query.insertRows({
         schemaName: 'movies',
-        queryName: 'titles',
-        columns: '*',
-        filterArray: [LABKEY.Filter.create('id', id)],
-        success: loadTitleQueryResult,
-        failure: onFailure
+        queryName: 'reviews',
+        rows: [{"id": id, "rating": rating, "review": review}],
+        successCallback: function(data)
+            {
+                window.location.reload();
+            },
     });
 }
 
+
 function loadTitleQueryResult(result)
 {
-    /*
-     {
-     "container" : "a01e4082-3acc-1033-acb1-69006fc3639f",
-     "_labkeyurl_createdby" : "/labkey/query/home/detailsQueryRow.view?schemaName=core&query.queryName=Users&UserId=1003",
-     "country" : "USA",
-     "year" : "2011–",
-     "rating" : "TV-MA",
-     "metacritic" : null,
-     "language" : "English",
-     "title" : "Game of Thrones",
-     "imdbrating" : 9.5,
-     "cast" : "Peter Dinklage, Lena Headey, Emilia Clarke, Kit Harington",
-     "fullplot" : "Nine noble families fight for control of the mythical land of Westeros. Political and sexual intrigue is pervasive. Robert Baratheon, King of Westeros, asks his old friend Eddard, Lord Stark, to serve as Hand of the King, or highest official. Secretly warned that the previous Hand was assassinated, Eddard accepts in order to investigate further. Meanwhile the Queen's family, the Lannisters, may be hatching a plot to take power. Across the sea, the last members of the previous and deposed ruling family, the Targaryens, are also scheming to regain the throne. The friction between the houses Stark, Lannister, Baratheon and Targaryen and with the remaining great houses Greyjoy, Tully, Arryn, Tyrell and Martell leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war and political confusion, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
-     "_labkeyurl_modifiedby" : "/labkey/query/home/detailsQueryRow.view?schemaName=core&query.queryName=Users&UserId=1003",
-     "plot" : "Several noble families fight for control of the mythical land of Westeros.",
-     "_labkeyurl_container" : "/labkey/project/home/begin.view?",
-     "createdby" : 1003,
-     "genre" : "Adventure, Drama, Fantasy",
-     "modified" : "2015/09/26 15:38:18",
-     "id" : 944947,
-     "released" : "2011/04/17 00:00:00",
-     "dimodified" : null,
-     "imdbid" : "tt0944947",
-     "director" : null,
-     "created" : "2015/09/26 15:38:18",
-     "runtime" : "55 min",
-     "imdbvotes" : 838065,
-     "ditransformrunid" : null,
-     "awards" : "Won 1 Golden Globe. Another 114 wins & 242 nominations.",
-     "_labkeyurl_imdbid" : "/labkey/query/home/detailsQueryRow.view?schemaName=movies&query.queryName=titles&id=944947",
-     "modifiedby" : 1003,
-     "writer" : "David Benioff, D.B. Weiss",
-     "poster" : "http://ia.media-imdb.com/images/M/MV5BNTgxOTI4NzY2M15BMl5BanBnXkFtZTgwMjY3MTM2NDE@._V1_SX300.jpg"
-     }
-     */
-    var row = result.rows[0];
+    titleInfo = result.rows[0];
     try
     {
-        var date = new Date(row.released);
-        row.released = Ext4.util.Format.date(date,"d F Y");
+        var date = new Date(titleInfo.released);
+        titleInfo.released = Ext4.util.Format.date(date,"d F Y");
     }
     catch (err) {}
-    React.render(React.createElement(SeriesBox,row), $('#content')[0]);
+
+    renderIfReady();
 }
+
+
+function loadReviewQueryResult(result)
+{
+    reviews = result.rows;
+    renderIfReady();
+}
+
+function loadEpisodesQueryResult(result)
+{
+    episodes = result.rows;
+    renderIfReady();
+}
+
+function renderIfReady()
+{
+    if (null == titleInfo || null == reviews || null == episodes)
+        return;
+    titleInfo.reviews = reviews;
+    titleInfo.episodes = episodes;
+
+    React.render(React.createElement(SeriesBox,titleInfo), $('#content')[0]);
+}
+
 
 function onFailure()
 {
@@ -141,5 +181,38 @@ function onFailure()
 }
 
 
-var model = {name:'Matthew', id:id};
+Ext4.onReady(function()
+{
+    if (id)
+    {
+        LABKEY.Query.selectRows({
+            schemaName: 'movies',
+            queryName: 'titles',
+            columns: '*',
+            filterArray: [LABKEY.Filter.create('id', id)],
+            success: loadTitleQueryResult,
+            failure: onFailure
+        });
+
+        LABKEY.Query.selectRows({
+            schemaName: 'movies',
+            queryName: 'reviews',
+            columns: 'created, createdby/displayname, rating, review',
+            sort : '-created',
+            filterArray: [LABKEY.Filter.create('id', id)],
+            success: loadReviewQueryResult,
+            failure: onFailure
+        });
+
+        LABKEY.Query.selectRows({
+            schemaName: 'movies',
+            queryName: 'episodes',
+            columns: '*',
+            sort: '+season,+episode',
+            filterArray: [LABKEY.Filter.create('seriesid', id)],
+            success: loadEpisodesQueryResult,
+            failure: onFailure
+        });
+    }
+});
 </script>
