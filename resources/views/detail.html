@@ -199,7 +199,7 @@ Ext4.onReady(function()
             queryName: 'reviews',
             columns: 'created, createdby/displayname, rating, review',
             sort : '-created',
-            filterArray: [LABKEY.Filter.create('id', id)],
+            filterArray: [LABKEY.Filter.create('titleid', id)],
             success: loadReviewQueryResult,
             failure: onFailure
         });
