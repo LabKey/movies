@@ -54,8 +54,13 @@
   </table>
   <table tableName="titles" tableDbType="TABLE">
     <titleColumn>title</titleColumn>
+    <tableUrl>/movies/detail.view?id=${id}</tableUrl>
+    <updateUrl></updateUrl>
+    <insertUrl></insertUrl>
     <columns>
-      <column columnName="id"/>
+      <column columnName="id">
+        <url>/movies/detail.view?id=${id}</url>
+      </column>
       <column columnName="imdbid"/>
       <column columnName="title"/>
       <column columnName="year"/>

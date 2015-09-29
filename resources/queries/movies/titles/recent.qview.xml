@@ -1,0 +1,25 @@
+<customView xmlns="http://labkey.org/data/xml/queryCustomView" label="Recent (since 2009)">
+	<columns>
+		<column name="title"/>
+		<column name="year"/>
+		<column name="rating"/>
+		<column name="runtime"/>
+		<column name="genre"/>
+		<column name="released"/>
+		<column name="metacritic"/>
+		<column name="imdbrating"/>
+		<column name="imdbvotes"/>
+		<column name="country"/>
+	</columns>
+	<filters>
+		<filter column="year" operator="gt" value="2009"/>
+	</filters>
+	<sorts>
+		<sort column="year"/>
+	</sorts>
+	<aggregates>
+		<aggregate column="title" label="Count" type="COUNT"/>
+		<aggregate column="imdbrating" label="Avg" type="AVG"/>
+		<aggregate column="imdbvotes" label="Total" type="SUM"/>
+	</aggregates>
+</customView>
