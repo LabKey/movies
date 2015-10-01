@@ -91,7 +91,7 @@ window.SeriesBox = React.createClass(
         <ul className="reviews">
         {this.props.reviews.map(function(review)
         {
-            return <div key={reviews.reviewid}><div style={{'font-size':'24pt', float:'left', 'padding-right':'5pt'}}>{review.rating}</div>{review["createdby/displayname"]} - {review.review}<div className="clear"/></div>;
+            return <div key={reviews.reviewid}><div style={{'font-size':'24pt', float:'left', 'padding-right':'5pt'}}>{review.rating}</div>{review["createdby/displayname"]} - {review.review}<div className="clear"/><p></p></div>;
         })}
         </ul>
 

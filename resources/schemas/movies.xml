@@ -61,13 +61,17 @@
       <column columnName="id">
         <url>/movies/detail.view?id=${id}</url>
       </column>
-      <column columnName="imdbid"/>
+      <column columnName="imdbid">
+        <url>http://www.imdb.com/title/${imdbid}/</url>
+      </column>
       <column columnName="title"/>
       <column columnName="year"/>
       <column columnName="rating"/>
       <column columnName="runtime"/>
       <column columnName="genre"/>
-      <column columnName="released"/>
+      <column columnName="released">
+        <formatString>d MMMM yyyy</formatString>
+      </column>
       <column columnName="director"/>
       <column columnName="writer"/>
       <column columnName="cast"/>
