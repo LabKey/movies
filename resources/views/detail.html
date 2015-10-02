@@ -34,47 +34,47 @@ window.SeriesBox = React.createClass(
     return (
         <article className="article title-overview">
 
-        <h1 className="header"><span className="itemprop">{this.props.title}</span>
-            <span className="nobr">&nbsp;({this.props.year})</span>
+        <h1 className="header"><span className="itemprop">{this.props.Title}</span>
+            <span className="nobr">&nbsp;({this.props.Year})</span>
         </h1>
 
         <div className="poster">
             <img height="317" width="214"
-                alt={this.props.title + ' (' + this.props.year + ') Poster'}
-                title={this.props.title + ' (' + this.props.year + ') Poster'}
-                src={this.props.poster} />
+                alt={this.props.Title + ' (' + this.props.Year + ') Poster'}
+                title={this.props.Title + ' (' + this.props.Year + ') Poster'}
+                src={this.props.Poster} />
         </div>
 
         <div className="title-description">
         <div className="infobar">
-            &nbsp;{this.props.rating}
+            &nbsp;{this.props.Rating}
             &nbsp;<span className="ghost">|</span>&nbsp;
-            <span className="itemprop">{this.props.genre}</span>
+            <span className="itemprop">{this.props.Genre}</span>
             &nbsp;<span className="ghost">|</span>&nbsp;
-            <span className="nobr">{this.props.released}< / span >
+            <span className="nobr">{this.props.Released}< / span >
             &nbsp;<span className="ghost">|</span>&nbsp;
-            <span className="nobr"> {this.props.country} </span >
+            <span className="nobr"> {this.props.Country} </span >
         </div>
 
         <p></p>
 
-        <p>{this.props.plot||this.props.fullplot}</p >
+        <p>{this.props.Plot||this.props.FullPlot}</p >
 
         <p></p>
 
         <div className="txt-block">
             <h4 className="inline">Director:</h4>
-            {this.props.director}
+            {this.props.Director}
         </div>
 
         <div className="txt-block">
             <h4 className="inline">Writers:</h4>
-            {this.props.writer}
+            {this.props.Writer}
         </div>
 
         <div className="txt-block">
             <h4 className="inline">Stars:</h4>
-            {this.props.cast}
+            {this.props.Cast}
         </div>
 
         <div className="clear" />
@@ -91,7 +91,7 @@ window.SeriesBox = React.createClass(
         <ul className="reviews">
         {this.props.reviews.map(function(review)
         {
-            return <div key={reviews.reviewid}><div style={{'font-size':'24pt', float:'left', 'padding-right':'5pt'}}>{review.rating}</div>{review["createdby/displayname"]} - {review.review}<div className="clear"/><p></p></div>;
+            return <div key={reviews.ReviewID}><div style={{'font-size':'24pt', float:'left', 'padding-right':'5pt'}}>{review.Rating}</div>{review["createdby/displayname"]} - {review.Review}<div className="clear"/><p></p></div>;
         })}
         </ul>
 
@@ -100,7 +100,7 @@ window.SeriesBox = React.createClass(
         <ul className="episodes">
         {this.props.episodes.map(function(episode)
         {
-            return <li key={episode.id}>season {episode.season}: {episode.episode} {episode.title}</li>;
+            return <li key={episode.id}>season {episode.Season}: {episode.Episode} {episode.Title}</li>;
         })}
         </ul>
 
@@ -201,7 +201,8 @@ Ext4.onReady(function()
             sort : '-created',
             filterArray: [LABKEY.Filter.create('titleid', id)],
             success: loadReviewQueryResult,
-            failure: onFailure
+	    // will fail if we haven't created the reviews table yet
+            failure: function(){reviews=[];renderIfReady()}
         });
 
         LABKEY.Query.selectRows({

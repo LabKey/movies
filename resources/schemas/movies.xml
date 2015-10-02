@@ -65,7 +65,7 @@
         <url>http://www.imdb.com/title/${imdbid}/</url>
       </column>
       <column columnName="Title"/>
-      <column columnName="year"/>
+      <column columnName="Year"/>
       <column columnName="Rating"/>
       <column columnName="Runtime"/>
       <column columnName="Genre"/>
