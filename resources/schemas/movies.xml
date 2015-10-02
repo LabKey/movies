@@ -34,10 +34,10 @@
   </table>
   <table tableName="reviews" tableDbType="TABLE">
     <columns>
-      <column columnName="reviewid"/>
-      <column columnName="titleid"/>
-      <column columnName="rating"/>
-      <column columnName="review"/>
+      <column columnName="ReviewID"/>
+      <column columnName="TitleID"/>
+      <column columnName="Rating"/>
+      <column columnName="Review"/>
       <column columnName="container"/>
       <column columnName="created"/>
       <column columnName="createdby"/>
@@ -64,26 +64,26 @@
       <column columnName="imdbid">
         <url>http://www.imdb.com/title/${imdbid}/</url>
       </column>
-      <column columnName="title"/>
+      <column columnName="Title"/>
       <column columnName="year"/>
-      <column columnName="rating"/>
-      <column columnName="runtime"/>
-      <column columnName="genre"/>
-      <column columnName="released">
+      <column columnName="Rating"/>
+      <column columnName="Runtime"/>
+      <column columnName="Genre"/>
+      <column columnName="Released">
         <formatString>d MMMM yyyy</formatString>
       </column>
-      <column columnName="director"/>
-      <column columnName="writer"/>
-      <column columnName="cast"/>
-      <column columnName="metacritic"/>
-      <column columnName="imdbrating"/>
-      <column columnName="imdbvotes"/>
-      <column columnName="poster"/>
-      <column columnName="plot"/>
-      <column columnName="fullplot"/>
-      <column columnName="language"/>
-      <column columnName="country"/>
-      <column columnName="awards"/>
+      <column columnName="Director"/>
+      <column columnName="Writer"/>
+      <column columnName="Cast"/>
+      <column columnName="Metacritic"/>
+      <column columnName="imdbRating"/>
+      <column columnName="imdbVotes"/>
+      <column columnName="Poster"/>
+      <column columnName="Plot"/>
+      <column columnName="FullPlot"/>
+      <column columnName="Language"/>
+      <column columnName="Country"/>
+      <column columnName="Awards"/>
       <column columnName="container"/>
       <column columnName="created"/>
       <column columnName="createdby"/>
@@ -97,32 +97,32 @@
     <columns>
       <column columnName="id"/>
       <column columnName="imdbid"/>
-      <column columnName="title"/>
-      <column columnName="year"/>
-      <column columnName="rating"/>
-      <column columnName="runtime"/>
-      <column columnName="genre"/>
-      <column columnName="released"/>
-      <column columnName="season"/>
-      <column columnName="episode"/>
-      <column columnName="seriesid">
+      <column columnName="Title"/>
+      <column columnName="Year"/>
+      <column columnName="Rating"/>
+      <column columnName="Runtime"/>
+      <column columnName="Genre"/>
+      <column columnName="Released"/>
+      <column columnName="Season"/>
+      <column columnName="Episode"/>
+      <column columnName="SeriesID">
       <fk>   
         <fkColumnName>id</fkColumnName>
         <fkTable>titles</fkTable>
       </fk>
       </column>
-      <column columnName="director"/>
-      <column columnName="writer"/>
-      <column columnName="cast"/>
-      <column columnName="metacritic"/>
-      <column columnName="imdbrating"/>
-      <column columnName="imdbvotes"/>
-      <column columnName="poster"/>
-      <column columnName="plot"/>
-      <column columnName="fullplot"/>
-      <column columnName="language"/>
-      <column columnName="country"/>
-      <column columnName="awards"/>
+      <column columnName="Director"/>
+      <column columnName="Writer"/>
+      <column columnName="Cast"/>
+      <column columnName="Metacritic"/>
+      <column columnName="imdbRating"/>
+      <column columnName="imdbVotes"/>
+      <column columnName="Poster"/>
+      <column columnName="Plot"/>
+      <column columnName="FullPlot"/>
+      <column columnName="Language"/>
+      <column columnName="Country"/>
+      <column columnName="Awards"/>
       <column columnName="lastupdated"/>
       <column columnName="container"/>
       <column columnName="created"/>
