@@ -52,5 +52,17 @@
         <delete file='${build.modules.dir}/${module.name}.module'/>
     </target>
 
+
+    <target name="start_tomcat">
+        <exec executable="bin/startup.sh" spawn="true" dir="${env.CATALINA_HOME}" osfamily="unix">
+	</exec>
+    </target>
+
+
+    <target name="stop_tomcat">
+        <exec executable="bin/shutdown.sh" spawn="true" dir="${env.CATALINA_HOME}" osfamily="unix">
+        </exec>
+    </target>
+
 </project>
 
