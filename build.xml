@@ -4,6 +4,13 @@
 
     <property environment='env'/>
 
+    <condition property="tomcat.home" value="${env.CATALINA_HOME}" else="${tomcat.home}">
+        <and>
+            <isset property="env.CATALINA_HOME"/>
+            <not><isset property="tomcat.home"/></not>
+        </and>
+    </condition>
+
     <target name='init'>
         <property name='deploy.modules.dir' value='${env.MODULES_DIR}'/>
         <property name='moduleDir' location='${basedir}'/>
@@ -54,13 +61,13 @@
 
 
     <target name="start_tomcat">
-        <exec executable="bin/startup.sh" spawn="true" dir="${env.CATALINA_HOME}" osfamily="unix">
+        <exec executable="bin/startup.sh" spawn="true" dir="${tomcat.home}" osfamily="unix">
 	</exec>
     </target>
 
 
     <target name="stop_tomcat">
-        <exec executable="bin/shutdown.sh" spawn="true" dir="${env.CATALINA_HOME}" osfamily="unix">
+        <exec executable="bin/shutdown.sh" spawn="true" dir="${tomcat.home}" osfamily="unix">
         </exec>
     </target>
 
