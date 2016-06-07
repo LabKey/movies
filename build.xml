@@ -13,30 +13,33 @@
 
     <target name='init'>
         <property name='deploy.modules.dir' value='${env.MODULES_DIR}'/>
-        <property name='moduleDir' location='${basedir}'/>
+        <condition property="moduleDir" value='${basedir}'>
+            <not><isset property="moduleDir"/></not>
+        </condition>
         <basename property='module.name' file='${moduleDir}'/>
-        <property name='module.src.dir' value='${basedir}'/>
-        <property name='build.modules.dir' location='${basedir}/..'/>
+        <condition property="moduleBuildDir" value='${moduleDir}/..'>
+            <not><isset property="moduleBuildDir"/></not>
+        </condition>
 	<echo message="module.name=${module.name}"/>
     </target>
 
     <target name='module.properties' depends='init'>
-        <ant antfile='build_common.xml' target='ensure_enlistment_id' />
-        <property file='enlistment.properties'/>
+        <ant antfile='${moduleDir}/build_common.xml' target='ensure_enlistment_id' />
+        <property file='${moduleDir}/enlistment.properties'/>
 
-        <mkdir dir='${module.src.dir}/config'/>
+        <mkdir dir='${moduleDir}/config'/>
         <tstamp>
             <format property='buildtime' pattern='MMMM d yyyy, h:mm aa'/>
         </tstamp>
-        <copy tofile='${module.src.dir}/config/module.xml' file='module.template.xml' overwrite='true'>
+        <copy tofile='${moduleDir}/config/module.xml' file='${moduleDir}/module.template.xml' overwrite='true'>
             <filterset begintoken='@@' endtoken='@@'>
-                <filtersfile file='${basedir}/module.properties'/>
+                <filtersfile file='${moduleDir}/module.properties'/>
                 <filter token='RequiredServerVersion' value='${RequiredServerVersion}'/>
                 <filter token='ModuleDependencies' value=''/>
                 <filter token='BuildTime' value='${buildtime}'/>
                 <filter token='BuildOS' value='${os.name}'/>
                 <filter token='BuildUser' value='${user.name}'/>
-                <filter token='BuildPath' value='${build.modules.dir}/${module.name}.module'/>
+                <filter token='BuildPath' value='${moduleBuildDir}/${module.name}.module'/>
                 <filter token='SourcePath' value='${moduleDir}'/>
                 <filter token='URL' value='Not built from a Subversion source tree'/>
                 <filter token='Revision' value='Not built from a Subversion source tree'/>
@@ -46,8 +49,8 @@
     </target>
 
     <target name='build' depends='module.properties'>
-        <zip destfile='${build.modules.dir}/${module.name}.module'>
-            <zipfileset dir='.'/>
+        <zip destfile='${moduleBuildDir}/${module.name}.module'>
+            <zipfileset dir='${moduleDir}'/>
         </zip>
 
         <available property='modulesDirExists' file='${deploy.modules.dir}'/>
@@ -55,8 +58,8 @@
 
     <target name='deploy' depends='build' if='modulesDirExists'>
         <echo message='Deploying ${module.name}.module to ${deploy.modules.dir}'/>
-        <copy file='${build.modules.dir}/${module.name}.module' overwrite='true' tofile='${deploy.modules.dir}/${module.name}.module'/>
-        <delete file='${build.modules.dir}/${module.name}.module'/>
+        <copy file='${moduleBuildDir}/${module.name}.module' overwrite='true' tofile='${deploy.modules.dir}/${module.name}.module'/>
+        <delete file='${moduleBuildDir}/${module.name}.module'/>
     </target>
 
 
@@ -70,6 +73,14 @@
         <exec executable="bin/shutdown.sh" spawn="true" dir="${tomcat.home}" osfamily="unix">
         </exec>
     </target>
+
+
+    <!--
+     ! this build.xml is meant to run stand-alone,
+     ! however these targets will prevent errors in the master labkey build
+     ! -->
+    <target name="build_module_api"></target>
+    <target name="build_module" depends="build"></target>
 
 </project>
 

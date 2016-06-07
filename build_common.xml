@@ -3,7 +3,7 @@
 <project name='shared tasks'>
 
     <target name='test_enlistment_properties'>
-        <property name='enlistment.file' value='${module.src.dir}/enlistment.properties'/>
+        <property name='enlistment.file' value='${moduleDir}/enlistment.properties'/>
         <available property='enlistment.file.exists' file='${enlistment.file}'/>
     </target>
 
