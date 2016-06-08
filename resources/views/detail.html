@@ -130,8 +130,16 @@ function submitReview(e)
         rows: [{"titleid": id, "rating": rating, "review": review}],
         successCallback: function(data)
             {
-                window.location.reload();
-            },
+                LABKEY.Query.selectRows({
+                    schemaName: 'movies',
+                    queryName: 'reviews',
+                    columns: 'created, createdby/displayname, rating, review',
+                    sort : '-created',
+                    filterArray: [LABKEY.Filter.create('titleid', id)],
+                    success: loadReviewQueryResult,
+                    failure: function(){reviews=[];renderIfReady()}
+                });
+            }
     });
 }
 
@@ -142,6 +150,7 @@ function loadTitleQueryResult(result)
     try
     {
         var date = new Date(titleInfo.released);
+        // TODO remove this Ext4 dependency
         titleInfo.released = Ext4.util.Format.date(date,"d F Y");
     }
     catch (err) {}
@@ -179,7 +188,7 @@ function onFailure()
 }
 
 
-Ext4.onReady(function()
+LABKEY.Utils.onReady(function()
 {
     if (id)
     {
