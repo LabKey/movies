@@ -1,12 +1,10 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <style>
     ARTICLE { font-family:Verdana, Arial, sans-serif;}
     ARTICLE H1 {font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; font-weight:normal; font-size:20pt;}
     SPAN.ghost {color:#cccccc;}
     DIV.poster {float:left; padding-right:10pt;}
     DIV.clear {clear:both;}
+    H4.clear {clear:both;}
     SPAN.nobr { white-space: nowrap;}
     UL.episodes { list-style-type:none; }
 </style>
@@ -14,6 +12,7 @@
 
 <div id="content"></div>
 
+<!-- NOTE: I don't recommend actually using text/babel (non-preprocessed jsx), this is just a demo -->
 <script type="text/babel">
 window.SeriesBox = React.createClass(
 {
@@ -77,8 +76,7 @@ window.SeriesBox = React.createClass(
             {this.props.Cast}
         </div>
 
-        <div className="clear" />
-        <h4 className="txt-block">Reviews:</h4>
+        <h4 className="clear txt-block">Reviews:</h4>
 
         <div><a href="#" onClick={this.showReviewForm}>add your own review</a></div>
         <div id="createReviewForm" style={{display:'none'}}>
@@ -96,7 +94,7 @@ window.SeriesBox = React.createClass(
         </ul>
 
 
-        <h4 className="txt-block">Episodes:</h4>
+        <h4 className="clear txt-block">Episodes:</h4>
         <ul className="episodes">
         {this.props.episodes.map(function(episode)
         {
