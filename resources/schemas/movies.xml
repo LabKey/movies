@@ -5,7 +5,7 @@
       <column columnName="country"/>
     </columns>
   </table>
-  <!-- <table tableName="tomatoes" tableDbType="TABLE">
+  <table tableName="tomatoes" tableDbType="TABLE">
     <columns>
       <column columnName="id"/>
       <column columnName="image"/>
@@ -23,21 +23,6 @@
       <column columnName="production"/>
       <column columnName="website"/>
       <column columnName="lastupdated"/>
-      <column columnName="container"/>
-      <column columnName="created"/>
-      <column columnName="createdby"/>
-      <column columnName="modified"/>
-      <column columnName="modifiedby"/>
-      <column columnName="ditransformrunid"/>
-      <column columnName="dimodified"/>
-    </columns>
-  </table> -->
-  <table tableName="reviews" tableDbType="TABLE">
-    <columns>
-      <column columnName="ReviewID"/>
-      <column columnName="TitleID"/>
-      <column columnName="Rating"/>
-      <column columnName="Review"/>
       <column columnName="container"/>
       <column columnName="created"/>
       <column columnName="createdby"/>
