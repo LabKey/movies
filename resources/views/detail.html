@@ -123,8 +123,9 @@ function loadTitleQueryResult(result)
     titleInfo = result.rows[0];
     try
     {
-        var date = new Date(titleInfo.released);
-        titleInfo.released = Ext4.util.Format.date(date,"d F Y");
+        var date = new Date(titleInfo.Released);
+        // TODO remove this Ext4 dependency
+        titleInfo.Released = Ext4.util.Format.date(date,"d F Y");
     }
     catch (err) {}
 
@@ -146,7 +147,7 @@ function loadEpisodesQueryResult(result)
 
 function renderIfReady()
 {
-    if (null == titleInfo || null == reviews || null == episodes)
+    if (null == titleInfo || null == episodes)
         return;
     titleInfo.reviews = reviews;
     titleInfo.episodes = episodes;
@@ -161,8 +162,9 @@ function onFailure()
 }
 
 
-Ext4.onReady(function()
+LABKEY.Utils.onReady(function()
 {
+    // TODO update to use current API version
     if (id)
     {
         LABKEY.Query.selectRows({
@@ -174,7 +176,7 @@ Ext4.onReady(function()
             failure: onFailure
         });
 
-        LABKEY.Query.selectRows({
+        /* LABKEY.Query.selectRows({
             schemaName: 'movies',
             queryName: 'reviews',
             columns: 'created, createdby/displayname, rating, review',
@@ -183,7 +185,7 @@ Ext4.onReady(function()
             success: loadReviewQueryResult,
 	    // will fail if we haven't created the reviews table yet
             failure: function(){reviews=[];renderIfReady()}
-        });
+        }); */
 
         LABKEY.Query.selectRows({
             schemaName: 'movies',
