@@ -1,0 +1,199 @@
+<style>
+    ARTICLE { font-family:Verdana, Arial, sans-serif;}
+    ARTICLE H1 {font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; font-weight:normal; font-size:20pt;}
+    SPAN.ghost {color:#cccccc;}
+    DIV.poster {float:left; padding-right:10pt;}
+    DIV.clear {clear:both;}
+    H4.clear {clear:both;}
+    SPAN.nobr { white-space: nowrap;}
+    UL.episodes { list-style-type:none; }
+</style>
+
+
+<div id="content"></div>
+
+<!-- NOTE: I don't recommend actually using text/babel (non-preprocessed jsx), this is just a demo -->
+<script type="text/babel">
+window.SeriesBox = React.createClass(
+{
+  displayName: 'TV Series',
+
+  showReviewForm : function(e)
+  {
+    $('#createReviewForm').css("display", "block");
+  },
+
+  hideReviewForm : function()
+  {
+    $('#createReviewForm').css("display", "none");
+  },
+
+  render: function()
+  {
+    return (
+        <article className="article title-overview">
+
+        <h1 className="header"><span className="itemprop">{this.props.Title}</span>
+            <span className="nobr">&nbsp;({this.props.Year})</span>
+        </h1>
+
+        <div className="poster">
+            <img height="317" width="214"
+                alt={this.props.Title + ' (' + this.props.Year + ') Poster'}
+                title={this.props.Title + ' (' + this.props.Year + ') Poster'}
+                src={this.props.Poster} />
+        </div>
+
+        <div className="title-description">
+        <div className="infobar">
+            &nbsp;{this.props.Rating}
+            &nbsp;<span className="ghost">|</span>&nbsp;
+            <span className="itemprop">{this.props.Genre}</span>
+            &nbsp;<span className="ghost">|</span>&nbsp;
+            <span className="nobr">{this.props.Released}</span>
+            &nbsp;<span className="ghost">|</span>&nbsp;
+            <span className="nobr"> {this.props.Country}</span>
+        </div>
+
+        <p></p>
+
+        <p>{this.props.Plot||this.props.FullPlot}</p >
+
+        <p></p>
+
+        <div className="txt-block">
+            <h4 className="inline">Director:</h4>
+            {this.props.Director}
+        </div>
+
+        <div className="txt-block">
+            <h4 className="inline">Writers:</h4>
+            {this.props.Writer}
+        </div>
+
+        <div className="txt-block">
+            <h4 className="inline">Stars:</h4>
+            {this.props.Cast}
+        </div>
+
+        <h4 className="clear txt-block">Episodes:</h4>
+        <ul className="episodes">
+        {this.props.episodes.map(function(episode)
+        {
+            return <li key={episode.id}>season {episode.Season}: {episode.Episode} {episode.Title}</li>;
+        })}
+        </ul>
+
+        </div>
+        </article>
+      );
+  }
+});
+</script>
+<script type="text/javascript">
+
+var id = LABKEY.ActionURL.getParameter("id");
+var titleInfo = null;
+var reviews = null;
+var episodes = null;
+
+
+function submitReview(e)
+{
+    var rating = $("input[name='rating']:checked").val();
+    var review = $("textarea[name='review']").val();
+    $('#createReviewForm').css("display","none");
+    e.preventDefault();
+    e.stopPropagation();
+
+    LABKEY.Query.insertRows({
+        schemaName: 'movies',
+        queryName: 'reviews',
+        rows: [{"titleid": id, "rating": rating, "review": review}],
+        successCallback: function(data)
+            {
+                window.location.reload();
+            },
+    });
+}
+
+
+function loadTitleQueryResult(result)
+{
+    titleInfo = result.rows[0];
+    try
+    {
+        var date = new Date(titleInfo.released);
+        titleInfo.released = Ext4.util.Format.date(date,"d F Y");
+    }
+    catch (err) {}
+
+    renderIfReady();
+}
+
+
+function loadReviewQueryResult(result)
+{
+    reviews = result.rows;
+    renderIfReady();
+}
+
+function loadEpisodesQueryResult(result)
+{
+    episodes = result.rows;
+    renderIfReady();
+}
+
+function renderIfReady()
+{
+    if (null == titleInfo || null == reviews || null == episodes)
+        return;
+    titleInfo.reviews = reviews;
+    titleInfo.episodes = episodes;
+
+    React.render(React.createElement(SeriesBox,titleInfo), $('#content')[0]);
+}
+
+
+function onFailure()
+{
+    alert('fail');
+}
+
+
+Ext4.onReady(function()
+{
+    if (id)
+    {
+        LABKEY.Query.selectRows({
+            schemaName: 'movies',
+            queryName: 'titles',
+            columns: '*',
+            filterArray: [LABKEY.Filter.create('id', id)],
+            success: loadTitleQueryResult,
+            failure: onFailure
+        });
+
+        LABKEY.Query.selectRows({
+            schemaName: 'movies',
+            queryName: 'reviews',
+            columns: 'created, createdby/displayname, rating, review',
+            sort : '-created',
+            filterArray: [LABKEY.Filter.create('titleid', id)],
+            success: loadReviewQueryResult,
+	    // will fail if we haven't created the reviews table yet
+            failure: function(){reviews=[];renderIfReady()}
+        });
+
+        LABKEY.Query.selectRows({
+            schemaName: 'movies',
+            queryName: 'episodes',
+            columns: '*',
+            sort: '+season,+episode',
+            filterArray: [LABKEY.Filter.create('seriesid', id)],
+            success: loadEpisodesQueryResult,
+            failure: onFailure
+        });
+    }
+});
+</script>

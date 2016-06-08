@@ -1,5 +1,5 @@
 Step TWO -- TODO
 ================
-* movies.xml
-* notice date formats, lookups from episode.seriesid to titles, link to imdb
-* [Table and Query Metadata](https://www.labkey.org/wiki/home/Documentation/page.view?name=columnMetadata)
+* detail.html
+* [Query API](https://www.labkey.org/download/clientapi_docs/javascript-api/symbols/LABKEY.Query.html#.selectRows)
+* uncomment detail.view urls in movies.xml
