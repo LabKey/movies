@@ -1,15 +1,15 @@
 <customView xmlns="http://labkey.org/data/xml/queryCustomView" label="Sort by IMDB Rating">
 	<columns>
-		<column name="title"/>
-		<column name="year"/>
-		<column name="rating"/>
-		<column name="released"/>
-		<column name="imdbrating"/>
+		<column name="Title"/>
+		<column name="Year"/>
+		<column name="Rating"/>
+		<column name="Released"/>
+		<column name="imdbRating"/>
 	</columns>
 	<sorts>
-		<sort column="imdbrating" descending="true"/>
+		<sort column="imdbRating" descending="true"/>
 	</sorts>
 	<aggregates>
-		<aggregate column="imdbrating" label="Average" type="AVG"/>
+		<aggregate column="imdbRating" label="Average" type="AVG"/>
 	</aggregates>
 </customView>
